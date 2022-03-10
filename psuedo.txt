@@ -1,6 +1,6 @@
 The game will start with the click of the Start button
 
-First define global variables that reference html elements
+First define global variables that reference html elements (queryselector or getelementbyID)
 
 Then variables like wins/losses 
 
@@ -12,7 +12,7 @@ Start by seeing if we can simply get the program to display the actual word
 
 Eventually the chosen word will have to be seperated into characters so we can check each one against a keystroke 
 
-Get it to display the word
+Get it to display the word (can we use .textContent for this?)
 and then to display the underlines
 and then see if we can store the keystroke and maybe for loop it through the array of letters (how do we seperate a string of characters into individual ones)
 
