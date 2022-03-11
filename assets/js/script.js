@@ -40,10 +40,10 @@ function init() {
   console.log(chosenWord);
   //splits the word into its letters as an array (this will be used to compare against key presses)
   var subStringArray = chosenWord.split("");
-  console.log(subStringArray);
+  //   console.log(subStringArray);
   //identical substring that we can mutate to/from letters/underscores
   var subStringMutated = chosenWord.split("");
-  console.log(subStringMutated);
+  //   console.log(subStringMutated);
 
   //loops through substring and changes each character to underscore (this mutates the array which is why we need an identical one to compare key presses to)
   for (var i = 0; i < subStringMutated.length; i++) {
@@ -56,7 +56,7 @@ function init() {
   //starts to listen for key presses. IF the key matches a letter in the word, change the underscore back to that letter
   document.addEventListener("keydown", function (event) {
     var key = event.key.toLowerCase();
-    console.log(key);
+    // console.log(key);
     //for each key press, loop through and check if it matches a letter in the array
     for (var i = 0; i < subStringArray.length; i++) {
       //if it matches, change it back to its letter
@@ -65,6 +65,15 @@ function init() {
         //display updated string
         wordDisplay.textContent = subStringMutated.join(" ");
       }
+      //   console.log(subStringMutated);
+    }
+
+    //check if any underscores remain. if not, display YOU WIN! If so, return?
+
+    if (subStringMutated.includes("_")) {
+      console.log("keep going!");
+    } else {
+      console.log("WINNER");
     }
   });
 }
