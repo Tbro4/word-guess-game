@@ -41,11 +41,11 @@ function init() {
   //splits the word into its letters as an array (this will be used to compare against key presses)
   var subStringArray = chosenWord.split("");
   console.log(subStringArray);
-  //identical substring that we can change
+  //identical substring that we can mutate to/from letters/underscores
   var subStringMutated = chosenWord.split("");
   console.log(subStringMutated);
 
-  //loops through substring and changes each character to underscore (HOWEVER, THIS IS MUTATING THE ARRAY, so how can we compare keystrokes?)
+  //loops through substring and changes each character to underscore (this mutates the array which is why we need an identical one to compare key presses to)
   for (var i = 0; i < subStringMutated.length; i++) {
     subStringMutated[i] = "_";
   }
@@ -57,9 +57,12 @@ function init() {
   document.addEventListener("keydown", function (event) {
     var key = event.key.toLowerCase();
     console.log(key);
+    //for each key press, loop through and check if it matches a letter in the array
     for (var i = 0; i < subStringArray.length; i++) {
+      //if it matches, change it back to its letter
       if (key === subStringArray[i]) {
         subStringMutated[i] = key;
+        //display updated string
         wordDisplay.textContent = subStringMutated.join(" ");
       }
     }
