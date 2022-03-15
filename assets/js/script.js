@@ -1,18 +1,26 @@
+//Only thing broken is if the start button is clicked while the timer is running, the timer does not reset and will run as many times as start has been clicked
+
 //Variables that point to references in html (usind ID or Class) using document.querySelector
 
 //this will need an eventListener
 var startButton = document.querySelector(".start-button");
 var wordDisplay = document.querySelector(".word-blanks");
 //refers to span with total wins/losses
-var win = document.querySelector(".win");
-var lose = document.querySelector(".lose");
+var wins = document.querySelector(".win");
+var losses = document.querySelector(".lose");
 //this will need an eventListener
 var resetButton = document.querySelector(".reset-button");
 //displays numeric value of seconds left
 var timerCount = document.querySelector(".timer-count");
 
-var wins = 0;
-var losses = 0;
+var secondsLeft = 10;
+var win = localStorage.getItem("wins");
+var loss = localStorage.getItem("losses");
+
+wins.textContent = win;
+losses.textContent = loss;
+// var win = 0;
+// var loss = 0;
 var wordList = [
   "guitar",
   "piano",
@@ -26,6 +34,16 @@ var wordList = [
   "trumpet",
   "flute",
 ];
+//resets local storage of wins and losses
+function reset() {
+  win = 0;
+  loss = 0;
+
+  localStorage.setItem("wins", win);
+  localStorage.setItem("losses", loss);
+  wins.textContent = win;
+  losses.textContent = loss;
+}
 
 //program chooses a word from the array wordList
 function wordChooser() {
@@ -35,6 +53,38 @@ function wordChooser() {
 }
 
 function init() {
+  //reset secondsLeft to 10 and clear chosenWord and substrinngs
+  secondsLeft = 10;
+  chosenWord = "";
+  subStringArray = "";
+  subStringMutated = "";
+  // console.log(chosenWord);
+  // console.log(subStringArray);
+  // console.log(subStringMutated);
+
+  //start timer
+  var timerInterval = setInterval(function () {
+    secondsLeft--;
+    timerCount.textContent = secondsLeft;
+    // $(".timer-count").text(secondsLeft);
+
+    if (secondsLeft === 0) {
+      clearInterval(timerInterval);
+      wordDisplay.textContent = "YOU LOSE!!!";
+      //adds a loss
+      loss++;
+      //displays updated losses
+      losses.textContent = loss;
+      localStorage.setItem("losses", loss);
+
+      chosenWord = "";
+      subStringArray = "";
+      subStringMutated = "";
+      //adds 10 secs back to the clock
+      secondsLeft = 10;
+    }
+  }, 1000);
+
   //brings in the word chosen from wordChooser
   var chosenWord = wordChooser();
   console.log(chosenWord);
@@ -65,21 +115,28 @@ function init() {
         //display updated string
         wordDisplay.textContent = subStringMutated.join(" ");
       }
-      //   console.log(subStringMutated);
+      // console.log(subStringMutated);
     }
+    console.log(subStringMutated);
 
     //check if any underscores remain. if not, display YOU WIN! If so, return?
+    //need a way to clear chosenWord
+    if (!subStringMutated.includes("_") && !subStringMutated.includes("")) {
+      clearInterval(timerInterval);
+      wordDisplay.textContent = "WINNER!!";
+      win++;
+      wins.textContent = win;
+      localStorage.setItem("wins", win);
 
-    if (subStringMutated.includes("_")) {
-      console.log("keep going!");
-    } else {
-      console.log("WINNER");
+      chosenWord = "";
+      subStringArray = "";
+      subStringMutated = "";
+      // console.log(chosenWord);
+      // console.log(subStringArray);
+      // console.log(subStringMutated);
     }
   });
 }
 
 startButton.addEventListener("click", init);
-
-//look at #15 Keyboard events for keydown info
-
-//refer to #19 for the attributes for the displayed word will switch between the letter or a underline symbol
+resetButton.addEventListener("click", reset);
